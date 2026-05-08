@@ -1,0 +1,7 @@
+# MathPro backend local development currently targets Python 3.12.
+# Python 3.14 may try to build pydantic-core from source for these pins.
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+SQLAlchemy==2.0.36
+pydantic==2.10.4
+sympy==1.13.3

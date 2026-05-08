@@ -1,0 +1,325 @@
+{
+  "version": "0.1.0",
+  "standards": [
+    "义务教育数学课程标准 2022 年版",
+    "普通高中数学课程标准 2017 年版 2020 年修订"
+  ],
+  "grades": [
+    {
+      "grade": "初一",
+      "level": "junior",
+      "modules": [
+        {
+          "name": "有理数",
+          "knowledge_points": [
+            { "id": "g07_rational_number_concept", "name": "有理数的概念", "semester": "上" },
+            { "id": "g07_number_axis", "name": "数轴", "semester": "上" },
+            { "id": "g07_absolute_value", "name": "绝对值", "semester": "上" },
+            { "id": "g07_rational_operations", "name": "有理数混合运算", "semester": "上" }
+          ]
+        },
+        {
+          "name": "整式",
+          "knowledge_points": [
+            { "id": "g07_monomial_polynomial", "name": "单项式与多项式", "semester": "上" },
+            { "id": "g07_like_terms", "name": "合并同类项", "semester": "上" },
+            { "id": "g07_expression_value", "name": "代数式求值", "semester": "上" }
+          ]
+        },
+        {
+          "name": "一元一次方程",
+          "knowledge_points": [
+            { "id": "g07_linear_equation", "name": "一元一次方程", "semester": "上" },
+            { "id": "g07_equation_application", "name": "一元一次方程应用", "semester": "上" }
+          ]
+        },
+        {
+          "name": "几何初步",
+          "knowledge_points": [
+            { "id": "g07_lines_angles", "name": "线段与角", "semester": "上" },
+            { "id": "g07_parallel_lines_intro", "name": "平行线初步", "semester": "下" }
+          ]
+        },
+        {
+          "name": "相交线与平行线",
+          "knowledge_points": [
+            { "id": "g07_vertical_angles", "name": "对顶角与邻补角", "semester": "下" },
+            { "id": "g07_parallel_properties", "name": "平行线的性质", "semester": "下" },
+            { "id": "g07_parallel_criteria", "name": "平行线的判定", "semester": "下" }
+          ]
+        },
+        {
+          "name": "平面直角坐标系",
+          "knowledge_points": [
+            { "id": "g07_coordinate_plane", "name": "平面直角坐标系", "semester": "下" },
+            { "id": "g07_point_coordinates", "name": "点的坐标", "semester": "下" }
+          ]
+        },
+        {
+          "name": "数据与统计",
+          "knowledge_points": [
+            { "id": "g07_data_collection", "name": "数据收集与整理", "semester": "下" },
+            { "id": "g07_statistical_charts", "name": "统计图表", "semester": "下" }
+          ]
+        }
+      ]
+    },
+    {
+      "grade": "初二",
+      "level": "junior",
+      "modules": [
+        {
+          "name": "三角形",
+          "knowledge_points": [
+            { "id": "g08_triangle_sides", "name": "三角形三边关系", "semester": "上" },
+            { "id": "g08_triangle_angles", "name": "三角形内角和", "semester": "上" },
+            { "id": "g08_congruent_triangles", "name": "全等三角形", "semester": "上" },
+            { "id": "g08_isosceles_triangle", "name": "等腰三角形", "semester": "上" }
+          ]
+        },
+        {
+          "name": "轴对称",
+          "knowledge_points": [
+            { "id": "g08_axis_symmetry", "name": "轴对称图形", "semester": "上" },
+            { "id": "g08_perpendicular_bisector", "name": "线段垂直平分线", "semester": "上" }
+          ]
+        },
+        {
+          "name": "整式乘除与因式分解",
+          "knowledge_points": [
+            { "id": "g08_power_operations", "name": "幂的运算", "semester": "上" },
+            { "id": "g08_polynomial_multiplication", "name": "整式乘法", "semester": "上" },
+            { "id": "g08_factorization", "name": "因式分解", "semester": "上" }
+          ]
+        },
+        {
+          "name": "分式",
+          "knowledge_points": [
+            { "id": "g08_fraction_domain", "name": "分式有意义的条件", "semester": "下" },
+            { "id": "g08_fraction_operations", "name": "分式运算", "semester": "下" },
+            { "id": "g08_fraction_equation", "name": "分式方程", "semester": "下" }
+          ]
+        },
+        {
+          "name": "一次函数",
+          "knowledge_points": [
+            { "id": "g08_function_concept", "name": "函数的概念", "semester": "下" },
+            { "id": "g08_linear_function", "name": "一次函数", "semester": "下" },
+            { "id": "g08_linear_function_graph", "name": "一次函数图象", "semester": "下" }
+          ]
+        },
+        {
+          "name": "数据分析",
+          "knowledge_points": [
+            { "id": "g08_mean_median_mode", "name": "平均数中位数众数", "semester": "下" },
+            { "id": "g08_variance", "name": "方差", "semester": "下" }
+          ]
+        }
+      ]
+    },
+    {
+      "grade": "初三",
+      "level": "junior",
+      "modules": [
+        {
+          "name": "二次根式",
+          "knowledge_points": [
+            { "id": "g09_radical_concept", "name": "二次根式的概念", "semester": "上" },
+            { "id": "g09_radical_simplify", "name": "二次根式化简", "semester": "上" },
+            { "id": "g09_radical_operations", "name": "二次根式运算", "semester": "上" }
+          ]
+        },
+        {
+          "name": "一元二次方程",
+          "knowledge_points": [
+            { "id": "g09_quadratic_equation", "name": "一元二次方程", "semester": "上" },
+            { "id": "g09_discriminant", "name": "判别式", "semester": "上" },
+            { "id": "g09_vieta", "name": "根与系数关系", "semester": "上" }
+          ]
+        },
+        {
+          "name": "二次函数",
+          "knowledge_points": [
+            { "id": "g09_quadratic_function_graph", "name": "二次函数图象", "semester": "上" },
+            { "id": "g09_quadratic_function_properties", "name": "二次函数性质", "semester": "上" },
+            { "id": "g09_quadratic_function_application", "name": "二次函数应用", "semester": "上" }
+          ]
+        },
+        {
+          "name": "圆",
+          "knowledge_points": [
+            { "id": "g09_circle_basic", "name": "圆的基本性质", "semester": "下" },
+            { "id": "g09_tangent", "name": "切线性质与判定", "semester": "下" },
+            { "id": "g09_central_angle", "name": "圆心角与圆周角", "semester": "下" }
+          ]
+        },
+        {
+          "name": "相似",
+          "knowledge_points": [
+            { "id": "g09_similarity", "name": "相似三角形", "semester": "下" },
+            { "id": "g09_projection", "name": "投影与视图", "semester": "下" }
+          ]
+        },
+        {
+          "name": "锐角三角函数",
+          "knowledge_points": [
+            { "id": "g09_trig_ratio", "name": "锐角三角函数", "semester": "下" },
+            { "id": "g09_solving_right_triangle", "name": "解直角三角形", "semester": "下" }
+          ]
+        },
+        {
+          "name": "概率初步",
+          "knowledge_points": [
+            { "id": "g09_probability_basic", "name": "随机事件与概率", "semester": "下" },
+            { "id": "g09_tree_diagram", "name": "列表法与树状图法", "semester": "下" }
+          ]
+        }
+      ]
+    },
+    {
+      "grade": "高一",
+      "level": "senior",
+      "modules": [
+        {
+          "name": "集合",
+          "knowledge_points": [
+            { "id": "g10_set_concept", "name": "集合的概念", "semester": "上" },
+            { "id": "g10_set_operations", "name": "集合的运算", "semester": "上" },
+            { "id": "g10_subset", "name": "子集与真子集", "semester": "上" }
+          ]
+        },
+        {
+          "name": "常用逻辑用语",
+          "knowledge_points": [
+            { "id": "g10_proposition", "name": "命题", "semester": "上" },
+            { "id": "g10_necessary_sufficient", "name": "充分条件与必要条件", "semester": "上" },
+            { "id": "g10_quantifier", "name": "全称量词与存在量词", "semester": "上" }
+          ]
+        },
+        {
+          "name": "函数",
+          "knowledge_points": [
+            { "id": "g10_function_concept", "name": "函数的概念", "semester": "上" },
+            { "id": "g10_function_domain", "name": "函数的定义域", "semester": "上" },
+            { "id": "g10_function_monotonicity", "name": "函数单调性", "semester": "上" },
+            { "id": "g10_function_parity", "name": "函数奇偶性", "semester": "上" }
+          ]
+        },
+        {
+          "name": "基本初等函数",
+          "knowledge_points": [
+            { "id": "g10_power_function", "name": "幂函数", "semester": "上" },
+            { "id": "g10_exponential_function", "name": "指数函数", "semester": "上" },
+            { "id": "g10_logarithmic_function", "name": "对数函数", "semester": "上" }
+          ]
+        },
+        {
+          "name": "三角函数",
+          "knowledge_points": [
+            { "id": "g10_angle_radian", "name": "任意角与弧度制", "semester": "下" },
+            { "id": "g10_trig_definition", "name": "三角函数定义", "semester": "下" },
+            { "id": "g10_trig_identity", "name": "同角三角函数关系", "semester": "下" },
+            { "id": "g10_trig_graph", "name": "三角函数图象与性质", "semester": "下" }
+          ]
+        },
+        {
+          "name": "平面向量",
+          "knowledge_points": [
+            { "id": "g10_vector_concept", "name": "平面向量的概念", "semester": "下" },
+            { "id": "g10_vector_operations", "name": "平面向量线性运算", "semester": "下" },
+            { "id": "g10_vector_dot", "name": "平面向量数量积", "semester": "下" }
+          ]
+        }
+      ]
+    },
+    {
+      "grade": "高二",
+      "level": "senior",
+      "modules": [
+        {
+          "name": "数列",
+          "knowledge_points": [
+            { "id": "g11_sequence_concept", "name": "数列的概念", "semester": "上" },
+            { "id": "g11_arithmetic_sequence", "name": "等差数列", "semester": "上" },
+            { "id": "g11_geometric_sequence", "name": "等比数列", "semester": "上" },
+            { "id": "g11_sequence_sum", "name": "数列求和", "semester": "上" }
+          ]
+        },
+        {
+          "name": "不等式",
+          "knowledge_points": [
+            { "id": "g11_inequality_properties", "name": "不等式性质", "semester": "上" },
+            { "id": "g11_basic_inequality", "name": "基本不等式", "semester": "上" },
+            { "id": "g11_linear_programming", "name": "线性规划", "semester": "上" }
+          ]
+        },
+        {
+          "name": "立体几何",
+          "knowledge_points": [
+            { "id": "g11_spatial_lines_planes", "name": "空间点线面位置关系", "semester": "上" },
+            { "id": "g11_parallel_perpendicular", "name": "空间平行与垂直", "semester": "上" },
+            { "id": "g11_solid_volume", "name": "空间几何体体积", "semester": "上" }
+          ]
+        },
+        {
+          "name": "解析几何",
+          "knowledge_points": [
+            { "id": "g11_line_equation", "name": "直线方程", "semester": "下" },
+            { "id": "g11_circle_equation", "name": "圆的方程", "semester": "下" },
+            { "id": "g11_line_circle_position", "name": "直线与圆的位置关系", "semester": "下" }
+          ]
+        },
+        {
+          "name": "圆锥曲线",
+          "knowledge_points": [
+            { "id": "g11_ellipse", "name": "椭圆", "semester": "下" },
+            { "id": "g11_hyperbola", "name": "双曲线", "semester": "下" },
+            { "id": "g11_parabola", "name": "抛物线", "semester": "下" }
+          ]
+        },
+        {
+          "name": "导数",
+          "knowledge_points": [
+            { "id": "g11_derivative_concept", "name": "导数的概念", "semester": "下" },
+            { "id": "g11_derivative_operation", "name": "导数运算", "semester": "下" },
+            { "id": "g11_derivative_application", "name": "导数与函数单调性", "semester": "下" }
+          ]
+        }
+      ]
+    },
+    {
+      "grade": "高三",
+      "level": "senior",
+      "modules": [
+        {
+          "name": "概率统计",
+          "knowledge_points": [
+            { "id": "g12_counting", "name": "计数原理", "semester": "上" },
+            { "id": "g12_probability_distribution", "name": "概率分布", "semester": "上" },
+            { "id": "g12_random_variable", "name": "随机变量", "semester": "上" },
+            { "id": "g12_statistics_case", "name": "统计案例", "semester": "上" }
+          ]
+        },
+        {
+          "name": "复数",
+          "knowledge_points": [
+            { "id": "g12_complex_concept", "name": "复数的概念", "semester": "上" },
+            { "id": "g12_complex_operations", "name": "复数运算", "semester": "上" },
+            { "id": "g12_complex_geometry", "name": "复数的几何意义", "semester": "上" }
+          ]
+        },
+        {
+          "name": "高考专题",
+          "knowledge_points": [
+            { "id": "g12_function_comprehensive", "name": "函数综合题", "semester": "全年" },
+            { "id": "g12_sequence_comprehensive", "name": "数列综合题", "semester": "全年" },
+            { "id": "g12_conic_comprehensive", "name": "圆锥曲线综合题", "semester": "全年" },
+            { "id": "g12_derivative_final", "name": "导数压轴题", "semester": "全年" },
+            { "id": "g12_geometry_comprehensive", "name": "立体几何综合题", "semester": "全年" },
+            { "id": "g12_probability_comprehensive", "name": "概率统计综合题", "semester": "全年" }
+          ]
+        }
+      ]
+    }
+  ]
+}

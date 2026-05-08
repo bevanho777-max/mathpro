@@ -1,0 +1,21 @@
+services:
+  backend:
+    build:
+      context: ./backend
+    environment:
+      MATHPRO_ENV: ${MATHPRO_ENV:-development}
+      MATHPRO_DATA_DIR: /app/data
+      MATHPRO_DATABASE_URL: ${MATHPRO_DATABASE_URL:-sqlite:////app/local_data/mathpro.sqlite3}
+    volumes:
+      - ./data:/app/data:ro
+      - ./local_data:/app/local_data
+    expose:
+      - "8000"
+
+  frontend:
+    build:
+      context: ./frontend
+    depends_on:
+      - backend
+    ports:
+      - "${MATHPRO_FRONTEND_PORT:-18080}:80"
