@@ -334,9 +334,9 @@
       "source_type": "template",
       "tags": ["二次根式", "有意义"],
       "parameters": { "a": { "type": "integer", "min": 1, "max": 9 } },
-      "question_template": "二次根式 $sqrt(x-{a})$ 有意义，$x$ 应满足什么条件？",
+      "question_template": "二次根式 $\\sqrt{{x-{a}}}$ 有意义，$x$ 应满足什么条件？",
       "answer_rule": "contains:x>={a}",
-      "solution_template": "被开方数必须非负，所以 $x-{a}≥0$，即 $x≥{a}$。"
+      "solution_template": "被开方数必须非负，所以 $x-{a}\\ge 0$，即 $x\\ge {a}$。"
     },
     {
       "id": "g09_radical_simplify_001",
@@ -350,9 +350,9 @@
       "source_type": "template",
       "tags": ["二次根式", "化简"],
       "parameters": { "a": { "type": "integer", "min": 2, "max": 9 } },
-      "question_template": "化简：$sqrt({a}^2)$。",
+      "question_template": "化简：$\\sqrt{{{a}^2}}$。",
       "answer_rule": "numeric:{a}",
-      "solution_template": "因为 {a} 为正数，所以 $sqrt({a}^2)={a}$。"
+      "solution_template": "因为 {a} 为正数，所以 $\\sqrt{{{a}^2}}={a}$。"
     },
     {
       "id": "g09_quadratic_equation_001",
@@ -718,9 +718,9 @@
       "source_type": "template",
       "tags": ["基本不等式"],
       "parameters": {},
-      "question_template": "若 $a>0,b>0$，基本不等式给出 $a+b$ 与 $2sqrt(ab)$ 的大小关系是什么？",
+      "question_template": "若 $a>0,b>0$，基本不等式给出 $a+b$ 与 $2\\sqrt{{ab}}$ 的大小关系是什么？",
       "answer_rule": "contains:>=",
-      "solution_template": "基本不等式为 $a+b≥2sqrt(ab)$，当且仅当 $a=b$ 时取等号。"
+      "solution_template": "基本不等式为 $a+b\\ge 2\\sqrt{{ab}}$，当且仅当 $a=b$ 时取等号。"
     },
     {
       "id": "g11_spatial_lines_planes_001",

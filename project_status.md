@@ -205,3 +205,12 @@ python scripts/check_coverage.py
 - 已绑定远程仓库 `https://github.com/bevanho777-max/mathpro.git`。
 - 已成功推送 `main` 分支到 GitHub。
 - 已更新 `.gitignore`，避免提交 TypeScript/Vite 构建产物：`*.tsbuildinfo`、`frontend/vite.config.js`、`frontend/vite.config.d.ts`。
+
+## 2026-05-08 第一阶段收尾验收
+
+- 已修复题库模板中的 `sqrt(...)` 普通文本，改为 LaTeX：`\\sqrt{...}`。
+- 已将相关解析中的不等号改为 LaTeX：`\\ge`。
+- 前端题目和解析仍通过 KaTeX 渲染 `$...$` 内的 LaTeX。
+- 已增强后端 `contains:` 判题的文本归一化，支持 `x>=6`、`x ≥ 6`、`x大于等于6` 等常见写法。
+- 已验证错误答案 `x>5` 不会被误判为 `x>=6`。
+- 已运行模板 JSON 检查、覆盖率检查、后端编译检查和前端 `npm run build`，均通过。

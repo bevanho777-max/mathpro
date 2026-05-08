@@ -98,15 +98,37 @@ class AnswerCheckRequest(BaseModel):
     answer_rule: str
 
 
+def normalize_answer_text(value: str) -> str:
+    replacements = {
+        " ": "",
+        "\t": "",
+        "≥": ">=",
+        "≤": "<=",
+        "≠": "!=",
+        "＝": "=",
+        "大于等于": ">=",
+        "大于或等于": ">=",
+        "不小于": ">=",
+        "小于等于": "<=",
+        "小于或等于": "<=",
+        "不大于": "<=",
+        "不等于": "!=",
+    }
+    normalized = value.strip()
+    for source, target in replacements.items():
+        normalized = normalized.replace(source, target)
+    return normalized
+
+
 def check_answer(answer: str, rule: str) -> bool:
-    normalized = answer.strip().replace(" ", "")
+    normalized = normalize_answer_text(answer)
     rule = rule.strip()
 
     if rule.startswith("exact:"):
-        return normalized == rule.removeprefix("exact:").strip().replace(" ", "")
+        return normalized == normalize_answer_text(rule.removeprefix("exact:"))
 
     if rule.startswith("contains:"):
-        return rule.removeprefix("contains:").strip().replace(" ", "") in normalized
+        return normalize_answer_text(rule.removeprefix("contains:")) in normalized
 
     if rule.startswith("numeric:"):
         try:
@@ -121,7 +143,7 @@ def check_answer(answer: str, rule: str) -> bool:
         except Exception:
             return False
 
-    return normalized == rule.replace(" ", "")
+    return normalized == normalize_answer_text(rule)
 
 
 @app.get("/api/health")

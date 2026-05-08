@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+* 修复题库模板中平方根公式的 LaTeX 写法，确保 `\\sqrt{...}` 可由 KaTeX 正确渲染。
+* 增强填空题文本判题归一化，支持 `x>=6`、`x ≥ 6`、`x大于等于6` 等答案写法。
 * 完成本地 Git 首次提交并推送到 GitHub 仓库 `bevanho777-max/mathpro`。
 * 更新 `.gitignore`，忽略 TypeScript/Vite 构建产物。
 * 明确后端本地开发使用 Python 3.12，新增 `.python-version`，并更新后端启动文档，避免 Python 3.14 安装 `pydantic-core` 失败。
