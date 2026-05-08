@@ -197,3 +197,11 @@ python scripts/check_coverage.py
 - 更新 `backend/requirements.txt` 注释，说明当前依赖建议使用 Python 3.12。
 - 更新 `README.md` 和 `docs/deploy.md` 的 Windows PowerShell 后端启动命令，改为 `py -3.12 -m venv .venv` 和 `python -m uvicorn ...`。
 - 已验证当前机器执行 `py -3.12 --version` 会提示未找到合适的 Python 运行时；需要先安装 Python 3.12 后再重建后端 `.venv`。
+
+## 2026-05-08 GitHub 同步记录
+
+- 已在本地 Git 仓库配置用户名 `bevanho777-max` 和邮箱 `bevanho777@gmail.com`。
+- 已创建首个提交 `Initial MathPro project scaffold`。
+- 已绑定远程仓库 `https://github.com/bevanho777-max/mathpro.git`。
+- 已成功推送 `main` 分支到 GitHub。
+- 已更新 `.gitignore`，避免提交 TypeScript/Vite 构建产物：`*.tsbuildinfo`、`frontend/vite.config.js`、`frontend/vite.config.d.ts`。

@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+* 完成本地 Git 首次提交并推送到 GitHub 仓库 `bevanho777-max/mathpro`。
+* 更新 `.gitignore`，忽略 TypeScript/Vite 构建产物。
 * 明确后端本地开发使用 Python 3.12，新增 `.python-version`，并更新后端启动文档，避免 Python 3.14 安装 `pydantic-core` 失败。
 * 实现第一版刷题 WebUI：年级、章节、知识点选择，出题，答题，判题，解析和下一题。
 * 更新前端基础样式，改善表单控件和 KaTeX 显示。

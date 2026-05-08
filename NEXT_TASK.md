@@ -110,6 +110,21 @@ python -m uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 4. 访问 `http://localhost:8000/api/health`、`http://localhost:8000/api/grades`、`http://localhost:8000/api/problem/random`。
 5. 后端本地验证通过后，再继续 Docker 验证或第二阶段规划。
 
+## 2026-05-08 Git 同步后下一步
+
+项目已经推送到 GitHub：`https://github.com/bevanho777-max/mathpro.git`。
+
+以后每次完成修改后，建议执行：
+
+```powershell
+git status
+git add .
+git commit -m "说明本次修改"
+git push
+```
+
+提交前确认 `.env`、数据库、日志、备份、`node_modules/`、`dist/`、`.venv/` 和学生答题记录没有进入暂存区。
+
 ## 注意
 
 - 不要引入复杂状态管理库。
