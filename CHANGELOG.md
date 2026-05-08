@@ -4,6 +4,7 @@
 
 ## Unreleased
 
+* 第三阶段：新增 SQLite 数据库配置和 `generated_problems` 表，生成题目时持久化 `problem_id` 与判题规则，判题时从 SQLite 查询，不再依赖内存字典。
 * 第二阶段加固：前端题目流程继续由后端 API 驱动，提交答案时改为回传 `problem_id`，后端根据已生成题目的判题规则检查答案，不再要求前端回传 `answer_rule`。
 * 统一平方根模板为标准 LaTeX 单层花括号形式，例如 `\\sqrt{x-{a}}` 和 `\\sqrt{ab}`。
 * 修复题库模板中平方根公式的 LaTeX 写法，确保 `\\sqrt{...}` 可由 KaTeX 正确渲染。

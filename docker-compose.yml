@@ -5,7 +5,7 @@ services:
     environment:
       MATHPRO_ENV: ${MATHPRO_ENV:-development}
       MATHPRO_DATA_DIR: /app/data
-      MATHPRO_DATABASE_URL: ${MATHPRO_DATABASE_URL:-sqlite:////app/local_data/mathpro.sqlite3}
+      MATHPRO_DATABASE_PATH: ${MATHPRO_DATABASE_PATH:-/app/local_data/mathpro.sqlite3}
     volumes:
       - ./data:/app/data:ro
       - ./local_data:/app/local_data

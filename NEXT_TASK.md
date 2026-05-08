@@ -156,6 +156,22 @@ git push
 3. 开始设计 SQLite 数据模型：`generated_problems`、`user_answers`、`wrong_book`。
 4. 将当前内存态 `problem_id` 记录迁移为数据库记录。
 
+## 2026-05-08 第三阶段 SQLite 生成题记录后下一步
+
+已完成：
+
+1. 新增 SQLite 配置和 `generated_problems` 表。
+2. 生成题目时保存 `problem_id`、题面、解析和判题规则。
+3. 判题时从 SQLite 查询 `answer_rule`。
+4. 后端不再依赖内存字典保存已生成题目的判题规则。
+
+下次建议：
+
+1. 手动重启后端，使用重启前生成的 `problem_id` 再次调用 `/api/answer/check`。
+2. 浏览器抽测高二刷题流程，确认前端交互无变化。
+3. 进入下一阶段前先设计 `user_answers` 和 `wrong_book`，不要急着做用户系统。
+4. 后续如果要支持 PostgreSQL，再补迁移工具和数据库 URL 配置说明。
+
 ## 注意
 
 - 不要引入复杂状态管理库。

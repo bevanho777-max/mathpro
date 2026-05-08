@@ -223,3 +223,16 @@ python scripts/check_coverage.py
 - 题库模板仍然保存在 `data/templates/*.json`，前端不直接读取题库文件。
 - 当前 `problem_id` 判题记录为后端进程内存态，适合本地开发和第一版刷题流程；后续进入 SQLite 阶段后应持久化到 `generated_problems` 表。
 - 已将平方根模板统一为标准 LaTeX 单层花括号形式，例如 `\\sqrt{x-{a}}`、`\\sqrt{{a}^2}` 和 `\\sqrt{ab}`。
+
+## 2026-05-08 第三阶段 SQLite 生成题记录
+
+- 已新增 SQLite 数据库配置，默认数据库路径为 `./local_data/mathpro.sqlite3`。
+- 数据库路径可通过环境变量 `MATHPRO_DATABASE_PATH` 覆盖，也保留 `MATHPRO_DATABASE_URL` 作为后续扩展入口。
+- `.env.example` 和 `docker-compose.yml` 已统一使用 `MATHPRO_DATABASE_PATH`。
+- 已新增 `generated_problems` 表模型，保存 `problem_id`、模板信息、题面、判题规则、解析和创建时间。
+- 后端生成题目时会把生成结果写入 SQLite。
+- `/api/answer/check` 现在根据 `problem_id` 从 SQLite 查询 `answer_rule`，不再依赖内存字典判题。
+- 前端 UI 和 API 路径保持不变。
+- `local_data/` 和 `*.sqlite3` 已被 `.gitignore` 忽略，数据库文件不会提交到 GitHub。
+- 已验证后端编译检查、前端 `npm run build`、覆盖率检查、HTTP 出题和提交答案均通过。
+- 已用独立 Python 进程模拟后端重启后的旧 `problem_id` 判题，确认可从 SQLite 查询并判题成功。
