@@ -6,6 +6,7 @@ import random
 import re
 from pathlib import Path
 from typing import Any
+from uuid import uuid4
 
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
@@ -23,6 +24,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+MAX_GENERATED_PROBLEMS = 500
+GENERATED_PROBLEMS: dict[str, dict[str, Any]] = {}
 
 
 def data_root() -> Path:
@@ -60,6 +64,16 @@ def load_templates() -> list[dict[str, Any]]:
     return templates
 
 
+def remember_problem(answer_rule: str) -> str:
+    if len(GENERATED_PROBLEMS) >= MAX_GENERATED_PROBLEMS:
+        oldest_problem_id = next(iter(GENERATED_PROBLEMS))
+        GENERATED_PROBLEMS.pop(oldest_problem_id, None)
+
+    problem_id = str(uuid4())
+    GENERATED_PROBLEMS[problem_id] = {"answer_rule": answer_rule}
+    return problem_id
+
+
 def render_problem(template: dict[str, Any]) -> dict[str, Any]:
     values: dict[str, Any] = {}
     for name, spec in template.get("parameters", {}).items():
@@ -78,7 +92,11 @@ def render_problem(template: dict[str, Any]) -> dict[str, Any]:
 
         return re.sub(r"\{([A-Za-z_][A-Za-z0-9_]*)\}", replace, text)
 
+    answer_rule = fill(template["answer_rule"])
+    problem_id = remember_problem(answer_rule)
+
     return {
+        "problem_id": problem_id,
         "template_id": template["id"],
         "grade": template["grade"],
         "semester": template["semester"],
@@ -87,7 +105,6 @@ def render_problem(template: dict[str, Any]) -> dict[str, Any]:
         "difficulty": template["difficulty"],
         "question_type": template["question_type"],
         "question": fill(template["question_template"]),
-        "answer_rule": fill(template["answer_rule"]),
         "solution": fill(template["solution_template"]),
         "parameters": values,
     }
@@ -95,7 +112,8 @@ def render_problem(template: dict[str, Any]) -> dict[str, Any]:
 
 class AnswerCheckRequest(BaseModel):
     answer: str
-    answer_rule: str
+    problem_id: str | None = None
+    answer_rule: str | None = None
 
 
 def normalize_answer_text(value: str) -> str:
@@ -210,7 +228,17 @@ def problem_by_knowledge(
 
 @app.post("/api/answer/check")
 def answer_check(payload: AnswerCheckRequest) -> dict[str, Any]:
-    is_correct = check_answer(payload.answer, payload.answer_rule)
+    answer_rule = payload.answer_rule
+    if payload.problem_id:
+        problem_record = GENERATED_PROBLEMS.get(payload.problem_id)
+        if not problem_record:
+            raise HTTPException(status_code=404, detail="Generated problem not found")
+        answer_rule = str(problem_record["answer_rule"])
+
+    if not answer_rule:
+        raise HTTPException(status_code=400, detail="Missing problem_id")
+
+    is_correct = check_answer(payload.answer, answer_rule)
     return {"correct": is_correct}
 
 

@@ -8,6 +8,7 @@ type KnowledgePoint = {
 };
 
 type Problem = {
+  problem_id: string;
   template_id: string;
   grade: string;
   semester: string;
@@ -16,7 +17,6 @@ type Problem = {
   difficulty: number;
   question_type: string;
   question: string;
-  answer_rule: string;
   solution: string;
   parameters: Record<string, string | number>;
 };
@@ -180,7 +180,7 @@ export default function App() {
       const result = await fetchJson<CheckResult>('/api/answer/check', undefined, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ answer, answer_rule: problem.answer_rule }),
+        body: JSON.stringify({ answer, problem_id: problem.problem_id }),
       });
 
       setCheckResult(result);

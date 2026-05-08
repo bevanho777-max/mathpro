@@ -214,3 +214,12 @@ python scripts/check_coverage.py
 - 已增强后端 `contains:` 判题的文本归一化，支持 `x>=6`、`x ≥ 6`、`x大于等于6` 等常见写法。
 - 已验证错误答案 `x>5` 不会被误判为 `x>=6`。
 - 已运行模板 JSON 检查、覆盖率检查、后端编译检查和前端 `npm run build`，均通过。
+
+## 2026-05-08 第二阶段 API 驱动加固
+
+- 已确认前端没有内置题库模拟数据，年级、章节、知识点、出题和判题都通过后端 `/api/*` 接口完成。
+- 已将前端提交答案逻辑从回传 `answer_rule` 调整为回传 `problem_id`。
+- 后端生成题目时会临时登记该题目的判题规则，并在 `/api/answer/check` 中根据 `problem_id` 完成判题。
+- 题库模板仍然保存在 `data/templates/*.json`，前端不直接读取题库文件。
+- 当前 `problem_id` 判题记录为后端进程内存态，适合本地开发和第一版刷题流程；后续进入 SQLite 阶段后应持久化到 `generated_problems` 表。
+- 已将平方根模板统一为标准 LaTeX 单层花括号形式，例如 `\\sqrt{x-{a}}`、`\\sqrt{{a}^2}` 和 `\\sqrt{ab}`。
