@@ -71,9 +71,18 @@ python scripts/validate_templates.py --strict
 
 脚本会扫描 `data/templates/*.json`，检查模板 ID、必填字段、知识点绑定、参数渲染、答案规则、难度、题型和常见 LaTeX 格式问题。普通模式下只有严重错误会返回非 0 退出码；`--strict` 会把警告也视为失败。
 
+## 后端测试
+
+```bash
+cd backend
+pytest
+```
+
+测试使用临时 SQLite 数据库，不会写入 `local_data/mathpro.sqlite3`。当前覆盖健康检查、年级接口、随机出题、判题、答题记录和错题本软移除流程。
+
 ## CI 自动检查
 
-项目已接入 GitHub Actions。每次 push 和 pull request 会自动运行后端依赖安装、Python 编译检查、题库严格校验、覆盖率检查、前端依赖安装和前端生产构建。
+项目已接入 GitHub Actions。每次 push 和 pull request 会自动运行后端依赖安装、Python 编译检查、后端 pytest、题库严格校验、覆盖率检查、前端依赖安装和前端生产构建。
 
 ## 项目结构
 

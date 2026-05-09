@@ -34,10 +34,11 @@
 
 1. 安装后端依赖。
 2. 后端 Python 编译检查。
-3. `python scripts/validate_templates.py --strict`。
-4. `python scripts/check_coverage.py --min-count 0`。
-5. 安装前端依赖。
-6. `npm run build`。
+3. `pytest backend/tests`。
+4. `python scripts/validate_templates.py --strict`。
+5. `python scripts/check_coverage.py --min-count 0`。
+6. 安装前端依赖。
+7. `npm run build`。
 
 提交前仍建议先在本地运行这些检查，避免把明显失败的变更推到 GitHub。
 

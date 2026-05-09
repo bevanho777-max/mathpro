@@ -4,6 +4,7 @@
 
 ## Unreleased
 
+* 第五阶段 D：新增后端 API pytest 自动化测试，并接入 GitHub Actions CI。
 * 第五阶段 C：新增 GitHub Actions CI，在 push 和 pull request 时自动运行后端编译、题库校验、覆盖率检查和前端构建。
 * 第五阶段 B：新增 `scripts/validate_templates.py` 题库质量校验脚本，并修复示例模板中的 LaTeX 不等号写法。
 * 第五阶段 A：新增 `data/templates/high2_high3_templates.json`，补充 87 个高二/高三自制题目模板，使高三可以开始正常出题。

@@ -313,3 +313,13 @@ python scripts/check_coverage.py
 - README 已加入 CI 状态徽章和自动检查说明。
 - `docs/dev_workflow.md` 已补充每次提交会自动运行 CI 的说明。
 - 本地已验证题库严格校验、覆盖率检查、后端编译检查和前端 `npm run build` 均通过。
+
+## 2026-05-09 第五阶段 D 后端 API 自动化测试
+
+- 已在 `backend/requirements.txt` 中加入 `pytest` 和 `httpx` 测试依赖。
+- 已新增 `backend/tests/test_api.py`，使用临时 SQLite 数据库运行，不污染 `local_data/mathpro.sqlite3`。
+- 测试覆盖 `/api/health`、`/api/grades`、`/api/problem/random`、`/api/answer/check`、`/api/answers/recent`、`/api/wrong-book` 和 `/api/wrong-book/remove`。
+- 测试确认出题接口不会返回 `answer_rule`，答错后会写入答题记录和错题本，错题可被软移除。
+- GitHub Actions 已新增 `pytest backend/tests` 步骤。
+- README 和 `docs/dev_workflow.md` 已补充后端测试与 CI 流程说明。
+- 已验证本地 `pytest backend/tests`、题库严格校验、覆盖率检查、后端编译检查和前端 `npm run build` 均通过。

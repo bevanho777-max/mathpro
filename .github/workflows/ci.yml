@@ -26,6 +26,9 @@ jobs:
       - name: Python compile check
         run: python -m compileall backend/app scripts
 
+      - name: Run backend tests
+        run: pytest backend/tests
+
       - name: Validate templates
         run: python scripts/validate_templates.py --strict
 
