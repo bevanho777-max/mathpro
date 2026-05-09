@@ -16,7 +16,7 @@ from sympy import simplify
 from sympy.parsing.sympy_parser import parse_expr
 
 from .database import SessionLocal, init_db
-from .models import GeneratedProblem
+from .models import GeneratedProblem, UserAnswer
 
 
 app = FastAPI(title="MathPro API", version="0.1.0")
@@ -94,6 +94,46 @@ def get_generated_problem(problem_id: str) -> GeneratedProblem | None:
     with SessionLocal() as session:
         statement = select(GeneratedProblem).where(GeneratedProblem.problem_id == problem_id)
         return session.execute(statement).scalar_one_or_none()
+
+
+def save_user_answer(problem: GeneratedProblem, user_answer: str, is_correct: bool) -> UserAnswer:
+    normalized_answer = normalize_answer_text(user_answer)
+    with SessionLocal() as session:
+        answer_record = UserAnswer(
+            problem_id=problem.problem_id,
+            template_id=problem.template_id,
+            grade=problem.grade,
+            semester=problem.semester,
+            module=problem.module,
+            knowledge_point=problem.knowledge_point,
+            difficulty=problem.difficulty,
+            question_type=problem.question_type,
+            user_answer=user_answer,
+            is_correct=is_correct,
+            normalized_answer=normalized_answer,
+        )
+        session.add(answer_record)
+        session.commit()
+        session.refresh(answer_record)
+        return answer_record
+
+
+def answer_record_to_dict(record: UserAnswer) -> dict[str, Any]:
+    return {
+        "id": record.id,
+        "problem_id": record.problem_id,
+        "template_id": record.template_id,
+        "grade": record.grade,
+        "semester": record.semester,
+        "module": record.module,
+        "knowledge_point": record.knowledge_point,
+        "difficulty": record.difficulty,
+        "question_type": record.question_type,
+        "user_answer": record.user_answer,
+        "is_correct": record.is_correct,
+        "normalized_answer": record.normalized_answer,
+        "created_at": record.created_at.isoformat(),
+    }
 
 
 def render_problem(template: dict[str, Any]) -> dict[str, Any]:
@@ -255,7 +295,16 @@ def answer_check(payload: AnswerCheckRequest) -> dict[str, Any]:
         raise HTTPException(status_code=404, detail="Generated problem not found")
 
     is_correct = check_answer(payload.answer, problem_record.answer_rule)
-    return {"correct": is_correct}
+    save_user_answer(problem_record, payload.answer, is_correct)
+    return {"correct": is_correct, "answer_recorded": True}
+
+
+@app.get("/api/answers/recent")
+def recent_answers(limit: int = Query(default=20, ge=1, le=100)) -> list[dict[str, Any]]:
+    with SessionLocal() as session:
+        statement = select(UserAnswer).order_by(UserAnswer.created_at.desc(), UserAnswer.id.desc()).limit(limit)
+        records = session.execute(statement).scalars().all()
+        return [answer_record_to_dict(record) for record in records]
 
 
 @app.get("/api/stats/coverage")

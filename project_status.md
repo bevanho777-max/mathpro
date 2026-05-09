@@ -236,3 +236,13 @@ python scripts/check_coverage.py
 - `local_data/` 和 `*.sqlite3` 已被 `.gitignore` 忽略，数据库文件不会提交到 GitHub。
 - 已验证后端编译检查、前端 `npm run build`、覆盖率检查、HTTP 出题和提交答案均通过。
 - 已用独立 Python 进程模拟后端重启后的旧 `problem_id` 判题，确认可从 SQLite 查询并判题成功。
+
+## 2026-05-09 第四阶段 A 答题记录
+
+- 已新增 `user_answers` 表模型，用于保存每次提交答案的记录。
+- `user_answers.problem_id` 通过外键关联 `generated_problems.problem_id`。
+- `/api/answer/check` 判题后会写入答题记录，保存题目元数据、原始答案、归一化答案和是否正确。
+- `/api/answer/check` 保持原有 `correct` 字段，并额外返回 `answer_recorded: true`。
+- 已新增 `GET /api/answers/recent`，默认返回最近 20 条答题记录，支持 `limit` 参数，当前限制为 1 到 100。
+- 本阶段未新增错题本、用户系统或前端页面。
+- 已验证自动建表、提交答案写入 `user_answers`、`GET /api/answers/recent?limit=5`、后端编译检查、覆盖率脚本和前端 `npm run build` 均通过。
