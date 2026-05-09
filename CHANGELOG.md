@@ -4,6 +4,7 @@
 
 ## Unreleased
 
+* 第五阶段 B：新增 `scripts/validate_templates.py` 题库质量校验脚本，并修复示例模板中的 LaTeX 不等号写法。
 * 第五阶段 A：新增 `data/templates/high2_high3_templates.json`，补充 87 个高二/高三自制题目模板，使高三可以开始正常出题。
 * 第四阶段 C：前端新增轻量“错题本”入口，可查看错题、显示解析和移除错题。
 * 调整年级可见性：`/api/grades` 恢复返回完整课程年级，高三等暂无模板年级保持可见，并由前端显示暂无题目提示。

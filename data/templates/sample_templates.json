@@ -288,7 +288,7 @@
       "parameters": { "a": { "type": "integer", "min": -6, "max": 6, "exclude": [0] } },
       "question_template": "分式 $1/(x-{a})$ 有意义时，$x$ 应满足什么条件？",
       "answer_rule": "contains:x!={a}",
-      "solution_template": "分母不能为 0，所以 $x-{a}≠0$，即 $x≠{a}$。"
+      "solution_template": "分母不能为 0，所以 $x-{a}\\ne0$，即 $x\\ne{a}$。"
     },
     {
       "id": "g08_linear_function_001",
@@ -544,7 +544,7 @@
       "parameters": { "a": { "type": "integer", "min": -5, "max": 5, "exclude": [0] } },
       "question_template": "求函数 $f(x)=1/(x-{a})$ 的定义域。",
       "answer_rule": "contains:x!={a}",
-      "solution_template": "分母不能为 0，所以 $x-{a}≠0$，因此 $x≠{a}$。"
+      "solution_template": "分母不能为 0，所以 $x-{a}\\ne0$，因此 $x\\ne{a}$。"
     },
     {
       "id": "g10_function_monotonicity_001",

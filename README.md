@@ -60,6 +60,15 @@ python scripts/check_coverage.py
 
 脚本会读取 `data/curriculum/knowledge_map.json` 和 `data/templates/*.json`，统计每个知识点已有模板数量。
 
+## 题库质量校验
+
+```bash
+python scripts/validate_templates.py
+python scripts/validate_templates.py --strict
+```
+
+脚本会扫描 `data/templates/*.json`，检查模板 ID、必填字段、知识点绑定、参数渲染、答案规则、难度、题型和常见 LaTeX 格式问题。普通模式下只有严重错误会返回非 0 退出码；`--strict` 会把警告也视为失败。
+
 ## 项目结构
 
 ```text

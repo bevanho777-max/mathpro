@@ -294,3 +294,13 @@ python scripts/check_coverage.py
 - 已修正两个表达式型答案规则，将 `numeric:` 改为 `sympy:`，避免判题时把表达式当作纯数字解析。
 - 已验证 `python scripts/check_coverage.py --min-count 0` 通过，当前知识点 105 个、模板 137 个。
 - 已验证后端编译检查、前端 `npm run build`、HTTP 高二/高三出题、出题接口不返回 `answer_rule`、答题接口和错题本接口均通过。
+
+## 2026-05-09 第五阶段 B 题库质量校验脚本
+
+- 已新增 `scripts/validate_templates.py`，用于独立校验 `data/templates/*.json` 题库模板质量。
+- 校验脚本会检查模板唯一 ID、必填字段、知识点地图绑定、参数渲染、未替换参数、答案规则、难度、题型和常见 LaTeX 格式问题。
+- 支持普通模式 `python scripts/validate_templates.py` 和严格模式 `python scripts/validate_templates.py --strict`。
+- 普通模式下有严重错误时退出码为 1，只有警告时退出码为 0；严格模式会把警告也视为失败。
+- 已修复 `sample_templates.json` 中 2 个模板解析里的 Unicode 不等号，将 `$x≠a$` 改为标准 LaTeX `$x\\ne a$` 风格。
+- 当前 137 个模板通过普通模式和严格模式校验，均为 0 错误、0 警告。
+- 已更新 README 和 `docs/question_format.md`，加入题库质量校验命令和说明。

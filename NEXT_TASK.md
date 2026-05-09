@@ -266,6 +266,23 @@ git push
 3. 为题库新增独立校验脚本，检查模板必填字段、重复 ID、知识点是否存在于知识点地图、`answer_rule` 格式是否可解析。
 4. 暂时不要做复杂统计，等题库覆盖更稳定后再推进知识点掌握统计。
 
+## 2026-05-09 第五阶段 B 题库质量校验脚本后下一步
+
+已完成：
+
+1. 新增 `scripts/validate_templates.py`。
+2. 校验脚本可扫描当前 137 个模板。
+3. 普通模式和 `--strict` 模式均已通过，当前 0 错误、0 警告。
+4. 已修复 `sample_templates.json` 中 2 个解析模板的 LaTeX 不等号写法。
+5. README 和 `docs/question_format.md` 已补充题库校验说明。
+
+下次建议：
+
+1. 每次新增或修改模板后，先运行 `python scripts/validate_templates.py --strict`。
+2. 继续补齐覆盖率报告中为 0 的知识点，优先处理高一和初中空白知识点。
+3. 后续可以把 `validate_templates.py` 和 `check_coverage.py` 接入 GitHub Actions。
+4. 题库继续扩大前，先考虑为 `answer_rule` 增加更明确的规则文档和测试样例。
+
 ## 注意
 
 - 不要引入复杂状态管理库。

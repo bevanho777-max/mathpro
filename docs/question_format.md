@@ -97,3 +97,26 @@ MathPro 第一阶段使用 JSON 文件维护题目模板。题库文件放在 `d
 - 每道题必须有答案、解析和可判题规则。
 - 每个知识点应逐步沉淀多种题型，不只做换数字。
 - 高考内容应优先自制仿真题、变式题、综合题和知识点拆解题。
+
+## 模板校验
+
+新增或修改题库模板后，应在项目根目录运行：
+
+```bash
+python scripts/validate_templates.py
+python scripts/validate_templates.py --strict
+```
+
+校验脚本会扫描 `data/templates/` 下所有 JSON 文件，并检查：
+
+- 模板 `id` 是否全局唯一。
+- 必填字段是否完整。
+- `grade`、`module`、`knowledge_point` 是否存在于 `data/curriculum/knowledge_map.json`。
+- `question_template`、`solution_template` 和 `answer_rule` 是否能用 `parameters` 渲染。
+- 渲染后是否仍残留未替换的参数占位符。
+- `answer_rule` 是否为空，`numeric:` 是否能渲染成纯数字。
+- `difficulty` 是否为 1 到 5 的整数。
+- `question_type` 是否属于当前允许题型。
+- LaTeX 是否存在常见格式问题，例如 `$` 不配对、`sqrt(...)` 写法、`\sqrt` 缺少花括号。
+
+普通模式下，有严重错误时退出码为 1，只有警告时退出码为 0。`--strict` 模式会把警告也视为失败，适合提交前自检。
