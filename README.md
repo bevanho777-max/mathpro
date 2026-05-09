@@ -1,5 +1,7 @@
 # MathPro
 
+![CI](https://github.com/bevanho777-max/mathpro/actions/workflows/ci.yml/badge.svg)
+
 MathPro 是一个面向中国初一到高三学生的数学刷题 WebUI。项目第一阶段服务于高二学生的日常练习，长期目标是作为可 clone、可部署、可贡献题库的开源项目持续演进。
 
 ## 核心原则
@@ -68,6 +70,10 @@ python scripts/validate_templates.py --strict
 ```
 
 脚本会扫描 `data/templates/*.json`，检查模板 ID、必填字段、知识点绑定、参数渲染、答案规则、难度、题型和常见 LaTeX 格式问题。普通模式下只有严重错误会返回非 0 退出码；`--strict` 会把警告也视为失败。
+
+## CI 自动检查
+
+项目已接入 GitHub Actions。每次 push 和 pull request 会自动运行后端依赖安装、Python 编译检查、题库严格校验、覆盖率检查、前端依赖安装和前端生产构建。
 
 ## 项目结构
 

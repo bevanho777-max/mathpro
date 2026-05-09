@@ -28,6 +28,19 @@
 6. 保持题库和代码分离。
 7. 保持项目适合 GitHub 开源。
 
+## GitHub Actions
+
+项目已配置 `.github/workflows/ci.yml`。每次 push 和 pull request 会自动运行：
+
+1. 安装后端依赖。
+2. 后端 Python 编译检查。
+3. `python scripts/validate_templates.py --strict`。
+4. `python scripts/check_coverage.py --min-count 0`。
+5. 安装前端依赖。
+6. `npm run build`。
+
+提交前仍建议先在本地运行这些检查，避免把明显失败的变更推到 GitHub。
+
 ## 记忆文件分工
 
 - `AI_CONTEXT.md`：保存长期项目规则，通常只在原则变化时更新。

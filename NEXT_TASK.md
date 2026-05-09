@@ -283,6 +283,22 @@ git push
 3. 后续可以把 `validate_templates.py` 和 `check_coverage.py` 接入 GitHub Actions。
 4. 题库继续扩大前，先考虑为 `answer_rule` 增加更明确的规则文档和测试样例。
 
+## 2026-05-09 第五阶段 C GitHub Actions CI 后下一步
+
+已完成：
+
+1. 新增 `.github/workflows/ci.yml`。
+2. CI 会在 push 和 pull request 时运行 Python 后端检查、题库严格校验、覆盖率检查和前端构建。
+3. README 已加入 CI 状态徽章和说明。
+4. `docs/dev_workflow.md` 已补充 GitHub Actions 自动检查流程。
+
+下次建议：
+
+1. 打开 GitHub Actions 页面，确认最新 `CI` 工作流运行结果。
+2. 若 CI 失败，优先查看失败步骤日志并保持小范围修复。
+3. 继续补齐覆盖率报告中为 0 的知识点。
+4. 后续可以增加后端 API 自动化测试，再把测试命令接入 CI。
+
 ## 注意
 
 - 不要引入复杂状态管理库。

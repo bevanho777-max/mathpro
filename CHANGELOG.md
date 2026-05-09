@@ -4,6 +4,7 @@
 
 ## Unreleased
 
+* 第五阶段 C：新增 GitHub Actions CI，在 push 和 pull request 时自动运行后端编译、题库校验、覆盖率检查和前端构建。
 * 第五阶段 B：新增 `scripts/validate_templates.py` 题库质量校验脚本，并修复示例模板中的 LaTeX 不等号写法。
 * 第五阶段 A：新增 `data/templates/high2_high3_templates.json`，补充 87 个高二/高三自制题目模板，使高三可以开始正常出题。
 * 第四阶段 C：前端新增轻量“错题本”入口，可查看错题、显示解析和移除错题。

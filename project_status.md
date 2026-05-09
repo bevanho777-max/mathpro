@@ -304,3 +304,12 @@ python scripts/check_coverage.py
 - 已修复 `sample_templates.json` 中 2 个模板解析里的 Unicode 不等号，将 `$x≠a$` 改为标准 LaTeX `$x\\ne a$` 风格。
 - 当前 137 个模板通过普通模式和严格模式校验，均为 0 错误、0 警告。
 - 已更新 README 和 `docs/question_format.md`，加入题库质量校验命令和说明。
+
+## 2026-05-09 第五阶段 C GitHub Actions CI
+
+- 已新增 `.github/workflows/ci.yml`，在 push 和 pull request 时自动运行项目质量检查。
+- CI 使用 `ubuntu-latest`、Python 3.11 和 Node 20。
+- CI 会安装 `backend/requirements.txt`，运行后端 Python 编译检查、题库严格校验、覆盖率检查、前端 `npm ci` 和 `npm run build`。
+- README 已加入 CI 状态徽章和自动检查说明。
+- `docs/dev_workflow.md` 已补充每次提交会自动运行 CI 的说明。
+- 本地已验证题库严格校验、覆盖率检查、后端编译检查和前端 `npm run build` 均通过。
