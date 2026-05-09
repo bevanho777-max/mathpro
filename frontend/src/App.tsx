@@ -25,6 +25,28 @@ type CheckResult = {
   correct: boolean;
 };
 
+type WrongBookItem = {
+  id: number;
+  problem_id: string;
+  template_id: string;
+  grade: string;
+  semester: string;
+  module: string;
+  knowledge_point: string;
+  difficulty: number;
+  question_type: string;
+  question: string;
+  solution: string;
+  first_wrong_answer: string;
+  last_wrong_answer: string;
+  wrong_count: number;
+  removed: boolean;
+  created_at: string;
+  last_wrong_at: string;
+  removed_at: string | null;
+};
+
+type ViewMode = 'practice' | 'wrong-book';
 type LoadState = 'idle' | 'loading' | 'ready' | 'error';
 
 function apiUrl(path: string, params?: Record<string, string>) {
@@ -83,6 +105,7 @@ function MathText({ text }: { text: string }) {
 }
 
 export default function App() {
+  const [viewMode, setViewMode] = useState<ViewMode>('practice');
   const [grades, setGrades] = useState<string[]>([]);
   const [modules, setModules] = useState<string[]>([]);
   const [knowledgePoints, setKnowledgePoints] = useState<KnowledgePoint[]>([]);
@@ -98,6 +121,9 @@ export default function App() {
 
   const [loadState, setLoadState] = useState<LoadState>('idle');
   const [message, setMessage] = useState('');
+  const [wrongBookItems, setWrongBookItems] = useState<WrongBookItem[]>([]);
+  const [wrongBookLoading, setWrongBookLoading] = useState(false);
+  const [wrongBookMessage, setWrongBookMessage] = useState('');
 
   const canLoadByKnowledge = Boolean(grade && moduleName && knowledgePoint);
   const hasPracticeScope = Boolean(moduleName && knowledgePoint);
@@ -166,6 +192,12 @@ export default function App() {
       });
   }, [grade, moduleName]);
 
+  useEffect(() => {
+    if (viewMode === 'wrong-book') {
+      void loadWrongBook();
+    }
+  }, [viewMode]);
+
   function resetAnswerState() {
     setAnswer('');
     setCheckResult(null);
@@ -224,6 +256,38 @@ export default function App() {
     }
   }
 
+  async function loadWrongBook() {
+    setWrongBookLoading(true);
+    setWrongBookMessage('');
+
+    try {
+      const items = await fetchJson<WrongBookItem[]>('/api/wrong-book');
+      setWrongBookItems(items);
+    } catch (error) {
+      setWrongBookItems([]);
+      setWrongBookMessage(error instanceof Error ? `无法读取错题本：${error.message}` : '无法读取错题本');
+    } finally {
+      setWrongBookLoading(false);
+    }
+  }
+
+  async function removeWrongBookItem(problemId: string) {
+    setWrongBookLoading(true);
+    setWrongBookMessage('');
+
+    try {
+      await fetchJson<{ removed: boolean; problem_id: string }>('/api/wrong-book/remove', undefined, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ problem_id: problemId }),
+      });
+      await loadWrongBook();
+    } catch (error) {
+      setWrongBookMessage(error instanceof Error ? `移除错题失败：${error.message}` : '移除错题失败');
+      setWrongBookLoading(false);
+    }
+  }
+
   return (
     <main className="min-h-screen bg-slate-50 text-slate-950">
       <div className="mx-auto flex min-h-screen w-full max-w-6xl flex-col gap-5 px-4 py-5 sm:px-6 lg:px-8">
@@ -240,6 +304,28 @@ export default function App() {
           </div>
         </header>
 
+        <nav className="flex w-full gap-2 rounded-lg border border-slate-200 bg-white p-1 text-sm font-semibold">
+          <button
+            className={`flex-1 rounded-md px-4 py-2 transition ${
+              viewMode === 'practice' ? 'bg-cyan-700 text-white' : 'text-slate-700 hover:bg-slate-50'
+            }`}
+            type="button"
+            onClick={() => setViewMode('practice')}
+          >
+            刷题
+          </button>
+          <button
+            className={`flex-1 rounded-md px-4 py-2 transition ${
+              viewMode === 'wrong-book' ? 'bg-cyan-700 text-white' : 'text-slate-700 hover:bg-slate-50'
+            }`}
+            type="button"
+            onClick={() => setViewMode('wrong-book')}
+          >
+            错题本
+          </button>
+        </nav>
+
+        {viewMode === 'practice' ? (
         <section className="grid gap-4 lg:grid-cols-[320px_1fr]">
           <aside className="rounded-lg border border-slate-200 bg-white p-4">
             <h2 className="text-base font-semibold text-slate-900">练习范围</h2>
@@ -441,6 +527,84 @@ export default function App() {
             </div>
           </section>
         </section>
+        ) : (
+          <section className="rounded-lg border border-slate-200 bg-white p-4 sm:p-5">
+            <div className="flex flex-col gap-3 border-b border-slate-200 pb-4 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <h2 className="text-base font-semibold text-slate-900">错题本</h2>
+                <p className="mt-1 text-sm text-slate-500">默认显示未移除的错题。</p>
+              </div>
+              <button
+                className="rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-800 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:text-slate-400"
+                type="button"
+                disabled={wrongBookLoading}
+                onClick={() => void loadWrongBook()}
+              >
+                刷新
+              </button>
+            </div>
+
+            {wrongBookMessage ? (
+              <div className="mt-4 rounded-md border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+                {wrongBookMessage}
+              </div>
+            ) : null}
+
+            <div className="mt-5">
+              {wrongBookLoading && wrongBookItems.length === 0 ? (
+                <div className="rounded-lg bg-slate-50 p-6 text-center text-sm text-slate-600">正在读取错题本...</div>
+              ) : null}
+
+              {!wrongBookLoading && wrongBookItems.length === 0 ? (
+                <div className="rounded-lg bg-slate-50 p-6 text-center text-sm text-slate-600">暂无错题</div>
+              ) : null}
+
+              {wrongBookItems.length > 0 ? (
+                <div className="grid gap-4">
+                  {wrongBookItems.map((item) => (
+                    <article key={item.id} className="rounded-lg border border-slate-200 p-4">
+                      <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+                        <div>
+                          <p className="text-sm font-semibold text-slate-900">
+                            {item.grade} / {item.module} / {item.knowledge_point}
+                          </p>
+                          <p className="mt-1 text-sm text-slate-500">
+                            {item.question_type} / 难度 {item.difficulty} / 错误 {item.wrong_count} 次
+                          </p>
+                        </div>
+                        <button
+                          className="w-fit rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-800 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:text-slate-400"
+                          type="button"
+                          disabled={wrongBookLoading}
+                          onClick={() => void removeWrongBookItem(item.problem_id)}
+                        >
+                          移除错题
+                        </button>
+                      </div>
+
+                      <div className="mt-4 rounded-lg bg-slate-50 p-4 text-base leading-8 text-slate-950">
+                        <MathText text={item.question} />
+                      </div>
+
+                      <div className="mt-4 grid gap-3 md:grid-cols-[220px_1fr]">
+                        <div className="rounded-md bg-rose-50 p-3 text-sm text-rose-800">
+                          <p className="font-semibold">我的最后错误答案</p>
+                          <p className="mt-1 break-words">{item.last_wrong_answer}</p>
+                        </div>
+                        <div className="rounded-md border border-slate-200 p-3 text-sm text-slate-700">
+                          <p className="font-semibold text-slate-900">解析</p>
+                          <p className="mt-2 leading-8">
+                            <MathText text={item.solution} />
+                          </p>
+                        </div>
+                      </div>
+                    </article>
+                  ))}
+                </div>
+              ) : null}
+            </div>
+          </section>
+        )}
       </div>
     </main>
   );
