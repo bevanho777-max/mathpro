@@ -323,3 +323,11 @@ python scripts/check_coverage.py
 - GitHub Actions 已新增 `pytest backend/tests` 步骤。
 - README 和 `docs/dev_workflow.md` 已补充后端测试与 CI 流程说明。
 - 已验证本地 `pytest backend/tests`、题库严格校验、覆盖率检查、后端编译检查和前端 `npm run build` 均通过。
+
+## 2026-05-09 第五阶段 E 后端 API 边界测试
+
+- 已补充后端 API 边界测试，`backend/tests/test_api.py` 现在包含 8 个测试用例。
+- 新增覆盖不存在的 `problem_id`、请求体缺少字段、无模板范围、未知年级、非法 `limit`、错题移除不存在记录等异常情况。
+- 错误响应测试会确认返回 JSON、包含 `detail`，并且不泄露 `answer_rule`。
+- `/api/problem/random` 已小范围增强，支持可选 `knowledge_point` 过滤；当年级、章节或知识点无模板时返回友好中文 detail。
+- 已验证本地 `pytest backend/tests` 通过，当前 8 passed。

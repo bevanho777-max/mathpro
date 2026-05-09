@@ -356,12 +356,18 @@ def knowledge_points(grade: str = Query(...), module: str = Query(...)) -> list[
 
 
 @app.get("/api/problem/random")
-def random_problem(grade: str | None = None, module: str | None = None) -> dict[str, Any]:
+def random_problem(
+    grade: str | None = None,
+    module: str | None = None,
+    knowledge_point: str | None = None,
+) -> dict[str, Any]:
     templates = load_templates()
     if grade:
         templates = [item for item in templates if item.get("grade") == grade]
     if module:
         templates = [item for item in templates if item.get("module") == module]
+    if knowledge_point:
+        templates = [item for item in templates if item.get("knowledge_point") == knowledge_point]
     if not templates:
         raise HTTPException(status_code=404, detail=NO_TEMPLATES_MESSAGE)
     return render_problem(random.choice(templates))
