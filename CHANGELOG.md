@@ -4,6 +4,7 @@
 
 ## Unreleased
 
+* 调整年级可见性：`/api/grades` 恢复返回完整课程年级，高三等暂无模板年级保持可见，并由前端显示暂无题目提示。
 * 修复无题目模板范围出题时的错误体验：筛选接口只返回已有模板覆盖范围，前端显示中文友好提示而不是原始 JSON。
 * 第四阶段 B：新增 `wrong_book` 错题本表，答错时自动记录或更新错题，新增 `GET /api/wrong-book` 和 `POST /api/wrong-book/remove`。
 * 第四阶段 A：新增 `user_answers` 答题记录表，提交答案时保存记录，并新增 `GET /api/answers/recent` 查询最近答题记录。

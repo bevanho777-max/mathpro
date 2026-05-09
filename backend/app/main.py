@@ -80,10 +80,6 @@ def template_scope() -> set[tuple[str, str, str]]:
     }
 
 
-def has_template_for_grade(scope: set[tuple[str, str, str]], grade: str) -> bool:
-    return any(item_grade == grade for item_grade, _, _ in scope)
-
-
 def has_template_for_module(scope: set[tuple[str, str, str]], grade: str, module: str) -> bool:
     return any(item_grade == grade and item_module == module for item_grade, item_module, _ in scope)
 
@@ -325,12 +321,7 @@ def health() -> dict[str, str]:
 @app.get("/api/grades")
 def grades() -> list[str]:
     knowledge_map = load_knowledge_map()
-    scope = template_scope()
-    return [
-        item["grade"]
-        for item in knowledge_map.get("grades", [])
-        if has_template_for_grade(scope, item["grade"])
-    ]
+    return [item["grade"] for item in knowledge_map.get("grades", [])]
 
 
 @app.get("/api/modules")

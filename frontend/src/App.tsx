@@ -100,6 +100,7 @@ export default function App() {
   const [message, setMessage] = useState('');
 
   const canLoadByKnowledge = Boolean(grade && moduleName && knowledgePoint);
+  const hasPracticeScope = Boolean(moduleName && knowledgePoint);
   const selectedPoint = useMemo(
     () => knowledgePoints.find((item) => item.name === knowledgePoint),
     [knowledgePoint, knowledgePoints],
@@ -131,6 +132,9 @@ export default function App() {
       .then((items) => {
         setModules(items);
         setModuleName(items[0] ?? '');
+        if (items.length === 0) {
+          setMessage('当前年级暂无题目，请换一个年级，或先补充该年级的题目模板。');
+        }
       })
       .catch((error: Error) => {
         setModules([]);
@@ -151,6 +155,9 @@ export default function App() {
       .then((items) => {
         setKnowledgePoints(items);
         setKnowledgePoint(items[0]?.name ?? '');
+        if (items.length === 0) {
+          setMessage('当前章节暂无题目，请换一个章节，或先补充该章节的题目模板。');
+        }
       })
       .catch((error: Error) => {
         setKnowledgePoints([]);
@@ -322,6 +329,9 @@ export default function App() {
                 {grade || '未选择'} / {moduleName || '未选择'} / {knowledgePoint || '未选择'}
               </p>
               {selectedPoint ? <p className="mt-1">学期：{selectedPoint.semester}</p> : null}
+              {!hasPracticeScope && grade ? (
+                <p className="mt-2 text-amber-700">当前年级暂无可练习题目。</p>
+              ) : null}
             </div>
           </aside>
 

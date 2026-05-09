@@ -263,8 +263,11 @@ python scripts/check_coverage.py
 ## 2026-05-09 模板覆盖范围与友好错误提示
 
 - 已修复知识点地图覆盖范围大于题库模板覆盖范围时，前端显示原始 JSON 错误的问题。
-- `/api/grades`、`/api/modules`、`/api/knowledge-points` 现在只返回当前已有题目模板覆盖的范围。
+- `/api/grades` 保持返回完整课程年级，确保高三等暂未覆盖模板的年级仍然可见。
+- `/api/modules`、`/api/knowledge-points` 只返回当前已有题目模板覆盖的章节和知识点。
 - 如果仍请求到无模板范围，后端返回中文 detail：`当前范围暂无题目，请换一个知识点或章节。`
 - 前端会解析后端 JSON `detail`，并将旧的 `No templates found` 兜底转换为中文提示。
+- 当前年级暂无题目模板时，前端会显示“当前年级暂无可练习题目”。
 - 未改变刷题页面结构、LaTeX 渲染、答题记录和错题本逻辑。
 - 已验证后端编译检查、前端 `npm run build`、覆盖率脚本、有模板知识点出题、无模板范围中文 404、错题本查询和 Git 忽略数据库文件均通过。
+- 已按用户反馈恢复高三年级可见性，并验证 HTTP `/api/grades` 返回初一到高三，`/api/modules?grade=高三` 暂时返回空列表。
