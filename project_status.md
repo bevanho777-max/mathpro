@@ -246,3 +246,16 @@ python scripts/check_coverage.py
 - 已新增 `GET /api/answers/recent`，默认返回最近 20 条答题记录，支持 `limit` 参数，当前限制为 1 到 100。
 - 本阶段未新增错题本、用户系统或前端页面。
 - 已验证自动建表、提交答案写入 `user_answers`、`GET /api/answers/recent?limit=5`、后端编译检查、覆盖率脚本和前端 `npm run build` 均通过。
+
+## 2026-05-09 第四阶段 B 错题本
+
+- 已新增 `wrong_book` 表模型，用于保存答错题目。
+- `/api/answer/check` 判题错误时会自动写入或更新错题本。
+- 同一个 `problem_id` 重复答错不会重复插入，会增加 `wrong_count`，并更新 `last_wrong_answer` 和 `last_wrong_at`。
+- 如果已移除的同题再次答错，会重新标记为 `removed=false`。
+- 同题后来答对不会自动移除错题。
+- `/api/answer/check` 保持 `correct` 和 `answer_recorded` 字段，并额外返回 `wrong_recorded`。
+- 已新增 `GET /api/wrong-book`，默认只返回 `removed=false` 的错题，支持 `limit`、`grade` 和 `knowledge_point` 参数。
+- 已新增 `POST /api/wrong-book/remove`，按 `problem_id` 将错题标记为 `removed=true`，不物理删除。
+- 本阶段未新增用户系统或前端页面。
+- 已验证自动建表、重复答错 `wrong_count` 增加、错题查询、按 `problem_id` 软移除、默认查询排除已移除错题、后端编译检查、覆盖率脚本和前端 `npm run build` 均通过。

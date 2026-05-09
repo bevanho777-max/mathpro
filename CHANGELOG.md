@@ -4,6 +4,7 @@
 
 ## Unreleased
 
+* 第四阶段 B：新增 `wrong_book` 错题本表，答错时自动记录或更新错题，新增 `GET /api/wrong-book` 和 `POST /api/wrong-book/remove`。
 * 第四阶段 A：新增 `user_answers` 答题记录表，提交答案时保存记录，并新增 `GET /api/answers/recent` 查询最近答题记录。
 * 第三阶段：新增 SQLite 数据库配置和 `generated_problems` 表，生成题目时持久化 `problem_id` 与判题规则，判题时从 SQLite 查询，不再依赖内存字典。
 * 第二阶段加固：前端题目流程继续由后端 API 驱动，提交答案时改为回传 `problem_id`，后端根据已生成题目的判题规则检查答案，不再要求前端回传 `answer_rule`。

@@ -4,6 +4,7 @@ import json
 import os
 import random
 import re
+from datetime import datetime
 from pathlib import Path
 from typing import Any
 from uuid import uuid4
@@ -16,7 +17,7 @@ from sympy import simplify
 from sympy.parsing.sympy_parser import parse_expr
 
 from .database import SessionLocal, init_db
-from .models import GeneratedProblem, UserAnswer
+from .models import GeneratedProblem, UserAnswer, WrongBook
 
 
 app = FastAPI(title="MathPro API", version="0.1.0")
@@ -136,6 +137,66 @@ def answer_record_to_dict(record: UserAnswer) -> dict[str, Any]:
     }
 
 
+def record_wrong_answer(problem: GeneratedProblem, user_answer: str) -> bool:
+    now = datetime.utcnow()
+    with SessionLocal() as session:
+        statement = select(WrongBook).where(WrongBook.problem_id == problem.problem_id)
+        wrong_record = session.execute(statement).scalar_one_or_none()
+
+        if wrong_record:
+            wrong_record.wrong_count += 1
+            wrong_record.last_wrong_answer = user_answer
+            wrong_record.last_wrong_at = now
+            wrong_record.removed = False
+            wrong_record.removed_at = None
+        else:
+            wrong_record = WrongBook(
+                problem_id=problem.problem_id,
+                template_id=problem.template_id,
+                grade=problem.grade,
+                semester=problem.semester,
+                module=problem.module,
+                knowledge_point=problem.knowledge_point,
+                difficulty=problem.difficulty,
+                question_type=problem.question_type,
+                question=problem.question,
+                solution=problem.solution,
+                first_wrong_answer=user_answer,
+                last_wrong_answer=user_answer,
+                wrong_count=1,
+                removed=False,
+                created_at=now,
+                last_wrong_at=now,
+            )
+            session.add(wrong_record)
+
+        session.commit()
+        return True
+
+
+def wrong_book_record_to_dict(record: WrongBook) -> dict[str, Any]:
+    return {
+        "id": record.id,
+        "problem_id": record.problem_id,
+        "template_id": record.template_id,
+        "grade": record.grade,
+        "semester": record.semester,
+        "module": record.module,
+        "knowledge_point": record.knowledge_point,
+        "difficulty": record.difficulty,
+        "question_type": record.question_type,
+        "question": record.question,
+        "solution": record.solution,
+        "first_wrong_answer": record.first_wrong_answer,
+        "last_wrong_answer": record.last_wrong_answer,
+        "wrong_count": record.wrong_count,
+        "removed": record.removed,
+        "created_at": record.created_at.isoformat(),
+        "last_wrong_at": record.last_wrong_at.isoformat(),
+        "removed_at": record.removed_at.isoformat() if record.removed_at else None,
+    }
+
+
 def render_problem(template: dict[str, Any]) -> dict[str, Any]:
     values: dict[str, Any] = {}
     for name, spec in template.get("parameters", {}).items():
@@ -175,6 +236,10 @@ def render_problem(template: dict[str, Any]) -> dict[str, Any]:
 
 class AnswerCheckRequest(BaseModel):
     answer: str
+    problem_id: str
+
+
+class WrongBookRemoveRequest(BaseModel):
     problem_id: str
 
 
@@ -296,7 +361,11 @@ def answer_check(payload: AnswerCheckRequest) -> dict[str, Any]:
 
     is_correct = check_answer(payload.answer, problem_record.answer_rule)
     save_user_answer(problem_record, payload.answer, is_correct)
-    return {"correct": is_correct, "answer_recorded": True}
+    wrong_recorded = False
+    if not is_correct:
+        wrong_recorded = record_wrong_answer(problem_record, payload.answer)
+
+    return {"correct": is_correct, "answer_recorded": True, "wrong_recorded": wrong_recorded}
 
 
 @app.get("/api/answers/recent")
@@ -305,6 +374,37 @@ def recent_answers(limit: int = Query(default=20, ge=1, le=100)) -> list[dict[st
         statement = select(UserAnswer).order_by(UserAnswer.created_at.desc(), UserAnswer.id.desc()).limit(limit)
         records = session.execute(statement).scalars().all()
         return [answer_record_to_dict(record) for record in records]
+
+
+@app.get("/api/wrong-book")
+def wrong_book(
+    limit: int = Query(default=20, ge=1, le=100),
+    grade: str | None = None,
+    knowledge_point: str | None = None,
+) -> list[dict[str, Any]]:
+    with SessionLocal() as session:
+        statement = select(WrongBook).where(WrongBook.removed.is_(False))
+        if grade:
+            statement = statement.where(WrongBook.grade == grade)
+        if knowledge_point:
+            statement = statement.where(WrongBook.knowledge_point == knowledge_point)
+        statement = statement.order_by(WrongBook.last_wrong_at.desc(), WrongBook.id.desc()).limit(limit)
+        records = session.execute(statement).scalars().all()
+        return [wrong_book_record_to_dict(record) for record in records]
+
+
+@app.post("/api/wrong-book/remove")
+def remove_wrong_book_item(payload: WrongBookRemoveRequest) -> dict[str, Any]:
+    with SessionLocal() as session:
+        statement = select(WrongBook).where(WrongBook.problem_id == payload.problem_id)
+        wrong_record = session.execute(statement).scalar_one_or_none()
+        if not wrong_record:
+            raise HTTPException(status_code=404, detail="Wrong book item not found")
+
+        wrong_record.removed = True
+        wrong_record.removed_at = datetime.utcnow()
+        session.commit()
+        return {"removed": True, "problem_id": payload.problem_id}
 
 
 @app.get("/api/stats/coverage")

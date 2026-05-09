@@ -47,3 +47,32 @@ class UserAnswer(Base):
     is_correct: Mapped[bool] = mapped_column(Boolean, nullable=False)
     normalized_answer: Mapped[str] = mapped_column(Text, nullable=False)
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, nullable=False)
+
+
+class WrongBook(Base):
+    __tablename__ = "wrong_book"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
+    problem_id: Mapped[str] = mapped_column(
+        String(64),
+        ForeignKey("generated_problems.problem_id"),
+        unique=True,
+        index=True,
+        nullable=False,
+    )
+    template_id: Mapped[str] = mapped_column(String(128), index=True, nullable=False)
+    grade: Mapped[str] = mapped_column(String(32), index=True, nullable=False)
+    semester: Mapped[str] = mapped_column(String(16), nullable=False)
+    module: Mapped[str] = mapped_column(String(128), index=True, nullable=False)
+    knowledge_point: Mapped[str] = mapped_column(String(128), index=True, nullable=False)
+    difficulty: Mapped[int] = mapped_column(Integer, nullable=False)
+    question_type: Mapped[str] = mapped_column(String(32), nullable=False)
+    question: Mapped[str] = mapped_column(Text, nullable=False)
+    solution: Mapped[str] = mapped_column(Text, nullable=False)
+    first_wrong_answer: Mapped[str] = mapped_column(Text, nullable=False)
+    last_wrong_answer: Mapped[str] = mapped_column(Text, nullable=False)
+    wrong_count: Mapped[int] = mapped_column(Integer, default=1, nullable=False)
+    removed: Mapped[bool] = mapped_column(Boolean, default=False, index=True, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, nullable=False)
+    last_wrong_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, nullable=False)
+    removed_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
