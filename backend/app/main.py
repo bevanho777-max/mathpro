@@ -30,6 +30,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+NO_TEMPLATES_MESSAGE = "当前范围暂无题目，请换一个知识点或章节。"
+
 
 @app.on_event("startup")
 def startup() -> None:
@@ -69,6 +71,30 @@ def load_templates() -> list[dict[str, Any]]:
         elif isinstance(payload, list):
             templates.extend(payload)
     return templates
+
+
+def template_scope() -> set[tuple[str, str, str]]:
+    return {
+        (template["grade"], template["module"], template["knowledge_point"])
+        for template in load_templates()
+    }
+
+
+def has_template_for_grade(scope: set[tuple[str, str, str]], grade: str) -> bool:
+    return any(item_grade == grade for item_grade, _, _ in scope)
+
+
+def has_template_for_module(scope: set[tuple[str, str, str]], grade: str, module: str) -> bool:
+    return any(item_grade == grade and item_module == module for item_grade, item_module, _ in scope)
+
+
+def has_template_for_knowledge_point(
+    scope: set[tuple[str, str, str]],
+    grade: str,
+    module: str,
+    knowledge_point: str,
+) -> bool:
+    return (grade, module, knowledge_point) in scope
 
 
 def save_generated_problem(problem: dict[str, Any], answer_rule: str) -> None:
@@ -299,27 +325,42 @@ def health() -> dict[str, str]:
 @app.get("/api/grades")
 def grades() -> list[str]:
     knowledge_map = load_knowledge_map()
-    return [item["grade"] for item in knowledge_map.get("grades", [])]
+    scope = template_scope()
+    return [
+        item["grade"]
+        for item in knowledge_map.get("grades", [])
+        if has_template_for_grade(scope, item["grade"])
+    ]
 
 
 @app.get("/api/modules")
 def modules(grade: str = Query(...)) -> list[str]:
     knowledge_map = load_knowledge_map()
+    scope = template_scope()
     for item in knowledge_map.get("grades", []):
         if item["grade"] == grade:
-            return [module["name"] for module in item.get("modules", [])]
+            return [
+                module["name"]
+                for module in item.get("modules", [])
+                if has_template_for_module(scope, grade, module["name"])
+            ]
     raise HTTPException(status_code=404, detail="Grade not found")
 
 
 @app.get("/api/knowledge-points")
 def knowledge_points(grade: str = Query(...), module: str = Query(...)) -> list[dict[str, Any]]:
     knowledge_map = load_knowledge_map()
+    scope = template_scope()
     for item in knowledge_map.get("grades", []):
         if item["grade"] != grade:
             continue
         for module_item in item.get("modules", []):
             if module_item["name"] == module:
-                return module_item.get("knowledge_points", [])
+                return [
+                    point
+                    for point in module_item.get("knowledge_points", [])
+                    if has_template_for_knowledge_point(scope, grade, module, point["name"])
+                ]
     raise HTTPException(status_code=404, detail="Knowledge points not found")
 
 
@@ -331,7 +372,7 @@ def random_problem(grade: str | None = None, module: str | None = None) -> dict[
     if module:
         templates = [item for item in templates if item.get("module") == module]
     if not templates:
-        raise HTTPException(status_code=404, detail="No templates found")
+        raise HTTPException(status_code=404, detail=NO_TEMPLATES_MESSAGE)
     return render_problem(random.choice(templates))
 
 
@@ -349,7 +390,7 @@ def problem_by_knowledge(
         and item.get("knowledge_point") == knowledge_point
     ]
     if not templates:
-        raise HTTPException(status_code=404, detail="No templates found")
+        raise HTTPException(status_code=404, detail=NO_TEMPLATES_MESSAGE)
     return render_problem(random.choice(templates))
 
 

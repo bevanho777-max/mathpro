@@ -259,3 +259,12 @@ python scripts/check_coverage.py
 - 已新增 `POST /api/wrong-book/remove`，按 `problem_id` 将错题标记为 `removed=true`，不物理删除。
 - 本阶段未新增用户系统或前端页面。
 - 已验证自动建表、重复答错 `wrong_count` 增加、错题查询、按 `problem_id` 软移除、默认查询排除已移除错题、后端编译检查、覆盖率脚本和前端 `npm run build` 均通过。
+
+## 2026-05-09 模板覆盖范围与友好错误提示
+
+- 已修复知识点地图覆盖范围大于题库模板覆盖范围时，前端显示原始 JSON 错误的问题。
+- `/api/grades`、`/api/modules`、`/api/knowledge-points` 现在只返回当前已有题目模板覆盖的范围。
+- 如果仍请求到无模板范围，后端返回中文 detail：`当前范围暂无题目，请换一个知识点或章节。`
+- 前端会解析后端 JSON `detail`，并将旧的 `No templates found` 兜底转换为中文提示。
+- 未改变刷题页面结构、LaTeX 渲染、答题记录和错题本逻辑。
+- 已验证后端编译检查、前端 `npm run build`、覆盖率脚本、有模板知识点出题、无模板范围中文 404、错题本查询和 Git 忽略数据库文件均通过。

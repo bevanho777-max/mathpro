@@ -32,11 +32,36 @@ function apiUrl(path: string, params?: Record<string, string>) {
   return `${path}${search}`;
 }
 
+function friendlyApiMessage(message: string) {
+  if (message.includes('No templates found')) {
+    return '当前范围暂无题目，请换一个知识点或章节。';
+  }
+  return message || '请求失败，请稍后再试。';
+}
+
+async function readErrorMessage(response: Response) {
+  const text = await response.text();
+  if (!text) {
+    return `HTTP ${response.status}`;
+  }
+
+  try {
+    const payload = JSON.parse(text) as { detail?: unknown };
+    if (typeof payload.detail === 'string') {
+      return friendlyApiMessage(payload.detail);
+    }
+  } catch {
+    return friendlyApiMessage(text);
+  }
+
+  return friendlyApiMessage(text);
+}
+
 async function fetchJson<T>(path: string, params?: Record<string, string>, init?: RequestInit): Promise<T> {
   const response = await fetch(apiUrl(path, params), init);
   if (!response.ok) {
-    const message = await response.text();
-    throw new Error(message || `HTTP ${response.status}`);
+    const message = await readErrorMessage(response);
+    throw new Error(message);
   }
   return response.json() as Promise<T>;
 }
